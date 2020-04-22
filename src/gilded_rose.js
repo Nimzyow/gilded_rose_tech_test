@@ -18,7 +18,7 @@ class Shop {
         this.items[i].name != AGED_BRIE &&
         this.items[i].name != BACKSTAGE_PASS
       ) {
-        this.checkForQuality(this.items[i]);
+        this.checkForQualityNormalItem(this.items[i]);
       } else {
         if (this.items[i].quality < 50) {
           this.items[i].quality = this.items[i].quality + 1;
@@ -61,7 +61,7 @@ class Shop {
 
     return this.items;
   }
-  checkForQuality(item) {
+  checkForQualityNormalItem(item) {
     if (item.quality > 0) {
       if (item.name != "Sulfuras, Hand of Ragnaros") {
         item.quality = item.quality - 1;
