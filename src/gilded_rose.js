@@ -23,13 +23,12 @@ class Shop {
         this.increaseQualityOfItem(this.items[i]);
         this.checkForQualityOfBackStagePass(this.items[i]);
       }
-      if (this.items[i].name != "Sulfuras, Hand of Ragnaros") {
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-      }
+      this.decreaseSellInValue(this.items[i]);
       if (this.items[i].sellIn < 0) {
         if (this.items[i].name != AGED_BRIE) {
           if (this.items[i].name != BACKSTAGE_PASS) {
             if (this.items[i].quality > 0) {
+              this.descreaseQualityOfItem(this.items[i]);
               if (this.items[i].name != "Sulfuras, Hand of Ragnaros") {
                 this.items[i].quality = this.items[i].quality - 1;
               }
@@ -50,7 +49,7 @@ class Shop {
   }
 
   checkForQualityOfNormalItem(item) {
-    if (item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros") {
+    if (item.quality > 0 && item.name != SULFURAS) {
       item.quality -= 1;
     }
   }
@@ -67,6 +66,17 @@ class Shop {
 
   increaseQualityOfItem(item) {
     item.quality += 1;
+  }
+
+  decreaseSellInValue(item) {
+    if (item.name != SULFURAS) {
+      item.sellIn -= 1;
+    }
+  }
+  descreaseQualityOfItem(item) {
+    if (item.name != SULFURAS) {
+      item.quality -= 1;
+    }
   }
 }
 
