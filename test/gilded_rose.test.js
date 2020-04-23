@@ -1,5 +1,5 @@
 const { Shop, Item } = require("../src/gilded_rose");
-const BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
+const { AGED_BRIE, BACKSTAGE_PASS, SULFURAS } = require("../Types");
 describe("Gilded Rose", function () {
   it("should foo", function () {
     const gildedRose = new Shop([new Item("foo", 0, 0)]);
@@ -23,5 +23,15 @@ describe("Gilded Rose", function () {
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(4);
     });
+  });
+  describe("all items except for Sulfuras, Hand of Ragnaros will decrease sellIn by 1", () => {
+    const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 5, 1)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).toBe(4);
+  });
+  describe("Sulfuras, Hand of Ragnaros's sellIn will not decrease", () => {
+    const gildedRose = new Shop([new Item(SULFURAS, 5, 1)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).toBe(5);
   });
 });

@@ -1,4 +1,4 @@
-const { AGED_BRIE, BACKSTAGE_PASS } = require("../Types");
+const { AGED_BRIE, BACKSTAGE_PASS, SULFURAS } = require("../Types");
 
 class Item {
   constructor(name, sellIn, quality) {
