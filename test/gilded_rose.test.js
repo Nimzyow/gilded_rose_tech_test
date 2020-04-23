@@ -24,14 +24,16 @@ describe("Gilded Rose", function () {
       expect(items[0].quality).toBe(4);
     });
   });
-  describe("all items except for Sulfuras, Hand of Ragnaros will decrease sellIn by 1", () => {
-    const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 5, 1)]);
-    const items = gildedRose.updateQuality();
-    expect(items[0].sellIn).toBe(4);
-  });
-  describe("Sulfuras, Hand of Ragnaros's sellIn will not decrease", () => {
-    const gildedRose = new Shop([new Item(SULFURAS, 5, 1)]);
-    const items = gildedRose.updateQuality();
-    expect(items[0].sellIn).toBe(5);
+  describe("Sulfuras, Hand of Ragnaros's", () => {
+    test("sellIn will not decrease", () => {
+      const gildedRose = new Shop([new Item(SULFURAS, 5, 1)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].sellIn).toBe(5);
+    });
+    test("sellIn will not decrease but will decrease for all other items", () => {
+      const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 5, 1)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].sellIn).toBe(4);
+    });
   });
 });
