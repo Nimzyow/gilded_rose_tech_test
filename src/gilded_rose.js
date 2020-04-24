@@ -30,15 +30,21 @@ class Shop {
           this.items[i].name != BACKSTAGE_PASS
         ) {
           if (this.items[i].quality > 0) {
-            //check if below if statement needs to be there anymore.
-            this.descreaseQualityOfItem(this.items[i]);
+            this.descreaseQualityOfNormalItem(this.items[i]);
           } else {
             this.items[i].quality =
               this.items[i].quality - this.items[i].quality;
           }
         } else {
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1;
+          if (
+            this.items[i].name == BACKSTAGE_PASS &&
+            this.items[i].sellIn <= 0
+          ) {
+            this.items[i].quality = 0;
+          } else {
+            if (this.items[i].quality < 50) {
+              this.items[i].quality += 1;
+            }
           }
         }
       }
@@ -72,7 +78,7 @@ class Shop {
       item.sellIn -= 1;
     }
   }
-  descreaseQualityOfItem(item) {
+  descreaseQualityOfNormalItem(item) {
     if (item.name != SULFURAS) {
       item.quality -= 1;
     }
