@@ -12,42 +12,53 @@ class Shop {
   constructor(items = []) {
     this.items = items;
   }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      if (
-        this.items[i].name != AGED_BRIE &&
-        this.items[i].name != BACKSTAGE_PASS
-      ) {
-        this.checkForQualityOfNormalItem(this.items[i]);
+      let itemName = this.items[i].name;
+      let item = this.items[i];
+      if (itemName != AGED_BRIE && itemName != BACKSTAGE_PASS) {
+        this.decreaseQualityOfNormalItem(item);
       } else {
-        this.increaseQualityOfItem(this.items[i]);
-        this.checkForQualityOfBackStagePass(this.items[i]);
+        this.qualityCheck(item);
       }
-      this.decreaseSellInValue(this.items[i]);
-      if (this.items[i].sellIn < 0) {
-        this.checkForQualityOfSellInNegativeItem(this.items[i]);
-      }
+      this.decreaseSellInValue(item);
+      this.checkForQualityOfSellInNegativeItem(item);
     }
     return this.items;
   }
 
+  qualityCheck(item) {
+    this.increaseQualityOfItem(item);
+    this.checkForQualityOfBackStagePass(item);
+  }
+
   checkForQualityOfSellInNegativeItem(item) {
-    if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASS) {
-      if (item.quality > 0) {
+    if (item.sellIn < 0) {
+      if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASS) {
+        this.decreaseQualityOfNormalItem(item);
         this.decreaseQualityOfNormalItem(item);
       } else {
-        item.quality -= item.quality;
-      }
-    } else {
-      if (item.name == BACKSTAGE_PASS) {
-        item.quality = 0;
-      } else {
-        this.increaseQualityOfItem(item);
+        this.invalidateQualityOfBackstagePass(item);
       }
     }
   }
 
-  checkForQualityOfNormalItem(item) {
+  increaseQualityOfItem(item) {
+    if (item.quality < 50) {
+      item.quality += 1;
+    }
+  }
+
+  invalidateQualityOfBackstagePass(item) {
+    if (item.name == BACKSTAGE_PASS) {
+      item.quality = 0;
+    } else {
+      this.increaseQualityOfItem(item);
+    }
+  }
+
+  decreaseQualityOfNormalItem(item) {
     if (item.quality > 0 && item.name != SULFURAS) {
       item.quality -= 1;
     }
@@ -63,20 +74,9 @@ class Shop {
     }
   }
 
-  increaseQualityOfItem(item) {
-    if (item.quality < 50) {
-      item.quality += 1;
-    }
-  }
-
   decreaseSellInValue(item) {
     if (item.name != SULFURAS) {
       item.sellIn -= 1;
-    }
-  }
-  decreaseQualityOfNormalItem(item) {
-    if (item.name != SULFURAS) {
-      item.quality -= 1;
     }
   }
 }
