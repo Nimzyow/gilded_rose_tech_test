@@ -38,6 +38,11 @@ describe("Gilded Rose", function () {
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(0);
     });
+    test("Aged Brie always increases in quality, even if sellIn < 0", () => {
+      const gildedRose = new Shop([new Item(AGED_BRIE, 0, 5)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(7);
+    });
   });
 
   describe("Sulfuras, Hand of Ragnaros's", () => {

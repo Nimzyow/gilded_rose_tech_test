@@ -19,38 +19,32 @@ class Shop {
         this.items[i].name != BACKSTAGE_PASS
       ) {
         this.checkForQualityOfNormalItem(this.items[i]);
-      } else if (this.items[i].quality < 50) {
+      } else {
         this.increaseQualityOfItem(this.items[i]);
         this.checkForQualityOfBackStagePass(this.items[i]);
       }
       this.decreaseSellInValue(this.items[i]);
       if (this.items[i].sellIn < 0) {
-        if (
-          this.items[i].name != AGED_BRIE &&
-          this.items[i].name != BACKSTAGE_PASS
-        ) {
-          if (this.items[i].quality > 0) {
-            this.descreaseQualityOfNormalItem(this.items[i]);
-          } else {
-            this.items[i].quality =
-              this.items[i].quality - this.items[i].quality;
-          }
-        } else {
-          if (
-            this.items[i].name == BACKSTAGE_PASS &&
-            this.items[i].sellIn <= 0
-          ) {
-            this.items[i].quality = 0;
-          } else {
-            if (this.items[i].quality < 50) {
-              this.items[i].quality += 1;
-            }
-          }
-        }
+        this.checkForQualityOfSellInNegativeItem(this.items[i]);
       }
     }
-
     return this.items;
+  }
+
+  checkForQualityOfSellInNegativeItem(item) {
+    if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASS) {
+      if (item.quality > 0) {
+        this.decreaseQualityOfNormalItem(item);
+      } else {
+        item.quality -= item.quality;
+      }
+    } else {
+      if (item.name == BACKSTAGE_PASS) {
+        item.quality = 0;
+      } else {
+        this.increaseQualityOfItem(item);
+      }
+    }
   }
 
   checkForQualityOfNormalItem(item) {
@@ -70,7 +64,9 @@ class Shop {
   }
 
   increaseQualityOfItem(item) {
-    item.quality += 1;
+    if (item.quality < 50) {
+      item.quality += 1;
+    }
   }
 
   decreaseSellInValue(item) {
@@ -78,7 +74,7 @@ class Shop {
       item.sellIn -= 1;
     }
   }
-  descreaseQualityOfNormalItem(item) {
+  decreaseQualityOfNormalItem(item) {
     if (item.name != SULFURAS) {
       item.quality -= 1;
     }
